@@ -1,0 +1,16 @@
+apiVersion : apps/v1beta1
+kind: Deployment
+metadata:
+  name: pulkitaggarwlnodejsdocker 
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: pulkitaggarwlnodejsdocker 
+    spec:
+      containers:
+        - name: pulkitaggarwlnodejsdocker 
+          image: aksdevopsa204.azurecr.io/pulkitaggarwlnodejsdocker 
+          ports:
+          - containerPort: 8080
