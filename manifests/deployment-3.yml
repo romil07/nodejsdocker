@@ -1,0 +1,16 @@
+apiVersion : apps/v1beta1
+kind: Deployment
+metadata:
+  name: "demofeb18cluster"
+spec:
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: "demofeb18cluster"
+    spec:
+      containers:
+        - name: "demofeb18cluster"
+          image: "demofeb18acr.azurecr.io/demofeb18cluster"
+          ports:
+          - containerPort: 8080
