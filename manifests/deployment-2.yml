@@ -1,0 +1,16 @@
+apiVersion : apps/v1beta1
+kind: Deployment
+metadata:
+  name: "danademocluster"
+spec:
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: "danademocluster"
+    spec:
+      containers:
+        - name: "danademocluster"
+          image: "danadocker.azurecr.io/danademocluster"
+          ports:
+          - containerPort: 8080
