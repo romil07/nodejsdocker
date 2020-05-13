@@ -1,35 +1,36 @@
 ![Integration Test](https://github.com/Azure/aml-run/workflows/Integration%20Test/badge.svg?branch=master&event=push)
 ![Lint and Test](https://github.com/Azure/aml-run/workflows/Lint%20and%20Test/badge.svg?branch=master&event=push)
 
-# Azure Machine Learning Run Action
+# GitHub Action for training Machine Learning Models using Azure
+
 
 ## Usage
 
-The Azure Machine Learning Run action will allow you to submit a run (Estimator, ML Pipeline, ScriptRunConfig or AutoMLConfig) to your Azure Machine Learning Workspace. To submit a run, you have to define
-1. Your python file(s) that should run remotely and
-2.
-    a) Either a runconfig YAML file (default `"code/train/run_config.yml"`), which describes your Azure Machine Learning Script Run that you want to submit. You can change the default value with the `runconfig_yaml_file` parameter.
+The Train Machine Learning Models using Azure action will help you train your models on [Azure Machine Learning](https://azure.microsoft.com/en-us/services/machine-learning/) using GitHub Actions.
 
-    b) or a Pipeline YAML file (default `"code/train/pipeline.yml"`), which describes your Azure Machine Learning Pipeline that you want to submit. You can change the default value with the `pipeline_yaml_file` parameter.
-    
-    c) or a python script (default `code/train/run_config.py`) which includes a function (default `def main(workspace):`) that describes your run that you want to submit. The python script gets the [workspace object](https://docs.microsoft.com/en-us/python/api/azureml-core/azureml.core.workspace(class)?view=azure-ml-py) injected and has to return one of the following objects:
-    - [Estimator](https://docs.microsoft.com/en-us/python/api/azureml-train-core/azureml.train.estimator.estimator?view=azure-ml-py)
-    - [TensorFlow Estimator](https://docs.microsoft.com/en-us/python/api/azureml-train-core/azureml.train.dnn.tensorflow?view=azure-ml-py)
-    - [PyTorch Estimator](https://docs.microsoft.com/en-us/python/api/azureml-train-core/azureml.train.dnn.pytorch?view=azure-ml-py)
-    - [Scikit Learn Estimator](https://docs.microsoft.com/en-us/python/api/azureml-train-core/azureml.train.sklearn.sklearn?view=azure-ml-py)
-    - [Chainer Estimator](https://docs.microsoft.com/en-us/python/api/azureml-train-core/azureml.train.dnn.chainer?view=azure-ml-py)
-    - [Pipeline](https://docs.microsoft.com/en-us/python/api/azureml-pipeline-core/azureml.pipeline.core.pipeline%28class%29?view=azure-ml-py) or
-    - [AutoMLConfig](https://docs.microsoft.com/en-us/python/api/azureml-train-automl-client/azureml.train.automl.automlconfig.automlconfig?view=azure-ml-py)
-    
-    If you want to change the default values for the python script, you can specify it with the `runconfig_python_file` and `runconfig_python_function_name` parameters.
+Get started today with a [free Azure account](https://azure.com/free/open-source)!
 
-This action requires an AML workspace to be created or attached to via the [aml-workspace](https://github.com/Azure/aml-workspace) action and some compute resources to be available, which can be managed via the [aml-compute](https://github.com/Azure/aml-compute) action.
+This repository contains GitHub Action for training machine learning models using Azure Machine Learning in a few different ways, each with different capabilities. To submit a training run, you have to define your python file(s) that should run remotely and file corresponding to [one of the supported methods of training](https://docs.microsoft.com/en-us/azure/machine-learning/concept-train-machine-learning-model#python-sdk)
 
-## Template repositories
 
-This action is one in a series of actions that can be used to setup an ML Ops process. Examples of these can be found at
-1. Simple example: [ml-template-azure](https://github.com/machine-learning-apps/ml-template-azure) and
-2. Comprehensive example: [aml-template](https://github.com/Azure/aml-template).
+
+## Dependencies on other GitHub Actions
+* [Checkout](https://github.com/actions/checkout) Checkout your Git repository content into GitHub Actions agent.
+* [aml-workspace](https://github.com/Azure/aml-workspace) This action requires an Azure Machine Learning workspace to be present. You can either create a new one or re-use an existing one using the action. 
+* [aml-compute](https://github.com/Azure/aml-compute) You can use this action to create a new traininig environment if your workspace doesnt have one already. 
+
+
+## Create Azure Machine Learning and deploy an machine learning model using GitHub Actions
+
+This action is one in a series of actions that can be used to setup an ML Ops process. **We suggest getting started with one of our template repositories**, which will allow you to create an ML Ops process in less than 5 minutes.
+
+1. **Simple template repository: [ml-template-azure](https://github.com/machine-learning-apps/ml-template-azure)**
+
+    Go to this template and follow the getting started guide to setup an ML Ops process within minutes and learn how to use the Azure       Machine Learning GitHub Actions in combination. This template demonstrates a very simple process for training and deploying machine     learning models.
+
+2. **Advanced template repository: [aml-template](https://github.com/Azure/aml-template)**
+
+    This template demonstrates how approval processes can be included in the process and how training and deployment workflows can be       splitted. It also shows how workflows (e.g. deployment) can be triggered from pull requests. More enhancements will be added to this template in the future to make it more enterprise ready.
 
 ### Example workflow
 
@@ -67,6 +68,26 @@ jobs:
 | ----- | -------- | ------- | ----------- |
 | azure_credentials | x | - | Output of `az ad sp create-for-rbac --name <your-sp-name> --role contributor --scopes /subscriptions/<your-subscriptionId>/resourceGroups/<your-rg> --sdk-auth`. This should be stored in your secrets |
 | parameters_file |  | `"compute.json"` | JSON file in the `.cloud/.azure` folder specifying your Azure Machine Learning compute target details. |
+
+
+
+2.
+    a) Either a runconfig YAML file (default `"code/train/run_config.yml"`), which describes your Azure Machine Learning Script Run that you want to submit. You can change the default value with the `runconfig_yaml_file` parameter.
+
+    b) or a Pipeline YAML file (default `"code/train/pipeline.yml"`), which describes your Azure Machine Learning Pipeline that you want to submit. You can change the default value with the `pipeline_yaml_file` parameter.
+    
+    c) or a python script (default `code/train/run_config.py`) which includes a function (default `def main(workspace):`) that describes your run that you want to submit. The python script gets the [workspace object](https://docs.microsoft.com/en-us/python/api/azureml-core/azureml.core.workspace(class)?view=azure-ml-py) injected and has to return one of the following objects:
+    - [Estimator](https://docs.microsoft.com/en-us/python/api/azureml-train-core/azureml.train.estimator.estimator?view=azure-ml-py)
+    - [TensorFlow Estimator](https://docs.microsoft.com/en-us/python/api/azureml-train-core/azureml.train.dnn.tensorflow?view=azure-ml-py)
+    - [PyTorch Estimator](https://docs.microsoft.com/en-us/python/api/azureml-train-core/azureml.train.dnn.pytorch?view=azure-ml-py)
+    - [Scikit Learn Estimator](https://docs.microsoft.com/en-us/python/api/azureml-train-core/azureml.train.sklearn.sklearn?view=azure-ml-py)
+    - [Chainer Estimator](https://docs.microsoft.com/en-us/python/api/azureml-train-core/azureml.train.dnn.chainer?view=azure-ml-py)
+    - [Pipeline](https://docs.microsoft.com/en-us/python/api/azureml-pipeline-core/azureml.pipeline.core.pipeline%28class%29?view=azure-ml-py) or
+    - [AutoMLConfig](https://docs.microsoft.com/en-us/python/api/azureml-train-automl-client/azureml.train.automl.automlconfig.automlconfig?view=azure-ml-py)
+    
+    If you want to change the default values for the python script, you can specify it with the `runconfig_python_file` and `runconfig_python_function_name` parameters.
+    
+    
 
 #### Azure Credentials
 
