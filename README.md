@@ -67,7 +67,7 @@ jobs:
 | Input | Required | Default | Description |
 | ----- | -------- | ------- | ----------- |
 | azure_credentials | x | - | Output of `az ad sp create-for-rbac --name <your-sp-name> --role contributor --scopes /subscriptions/<your-subscriptionId>/resourceGroups/<your-rg> --sdk-auth`. This should be stored in your secrets |
-| parameters_file |  | `"compute.json"` | JSON file in the `.cloud/.azure` folder specifying your Azure Machine Learning compute target details. |
+| parameters_file |  | `"compute.json"` | We expect a JSON file in the .cloud/.azure folder in root of your repository specifying Azure Machine Learning compute target details. If you have want to provide these details in a file other than "compute.json" you need to provide this input in the action. |
 
 
 
@@ -114,7 +114,7 @@ A sample file can be found in this repository in the folder `.cloud/.azure`. The
   
 ##### Inputs corresponding to methods of training
 
-- For A python script (default `code/train/run_config.py`) which includes a function (default `def main(workspace):`) that describes your run that you want to submit. The python script gets the [workspace object](https://docs.microsoft.com/en-us/python/api/azureml-core/azureml.core.workspace(class)?view=azure-ml-py) injected and has to return one of the following objects:
+- Using a python script (default `code/train/run_config.py`) which includes a function (default `def main(workspace):`) that describes your run that you want to submit. If you want to change the default values for the python script, you can specify it with the `runconfig_python_file` and `runconfig_python_function_name` parameters. The python script gets the [workspace object](https://docs.microsoft.com/en-us/python/api/azureml-core/azureml.core.workspace(class)?view=azure-ml-py) injected and has to return one of the following objects:
     - [Estimator](https://docs.microsoft.com/en-us/python/api/azureml-train-core/azureml.train.estimator.estimator?view=azure-ml-py)
     - [TensorFlow Estimator](https://docs.microsoft.com/en-us/python/api/azureml-train-core/azureml.train.dnn.tensorflow?view=azure-ml-py)
     - [PyTorch Estimator](https://docs.microsoft.com/en-us/python/api/azureml-train-core/azureml.train.dnn.pytorch?view=azure-ml-py)
@@ -123,20 +123,20 @@ A sample file can be found in this repository in the folder `.cloud/.azure`. The
     - [Pipeline](https://docs.microsoft.com/en-us/python/api/azureml-pipeline-core/azureml.pipeline.core.pipeline%28class%29?view=azure-ml-py) or
     - [AutoMLConfig](https://docs.microsoft.com/en-us/python/api/azureml-train-automl-client/azureml.train.automl.automlconfig.automlconfig?view=azure-ml-py)
     
-    If you want to change the default values for the python script, you can specify it with the `runconfig_python_file` and `runconfig_python_function_name` parameters.
+    
     
 | Parameter Name        | Required | Allowed Values           | Default    | Description |
 | --------------------- | -------- | ------------------------ | ---------- | ----------- |  
 | runconfig_python_file |          | str                      | `"code/train/run_config.py"`      | Path to the python script in your repository  in which you define your run and return an Estimator, Pipeline, AutoMLConfig or ScriptRunConfig object. |
 | runconfig_python_function_name |          | str                      | `"main"`              | The name of the function in your python script in your repository in which you define your run and return an Estimator, Pipeline, AutoMLConfig or ScriptRunConfig object. The function gets the workspace object passed as an argument. |
 
-- For a runconfig YAML file (default `"code/train/run_config.yml"`), which describes your Azure Machine Learning Script Run that you want to submit. You can change the default value with the `runconfig_yaml_file` parameter.
+- Using a runconfig YAML file (default `"code/train/run_config.yml"`), which describes your Azure Machine Learning Script Run that you want to submit. You can change the default value with the `runconfig_yaml_file` parameter.
 
 | Parameter Name        | Required | Allowed Values           | Default    | Description |
 | --------------------- | -------- | ------------------------ | ---------- | ----------- |  
 | runconfig_yaml_file   |          | str                      | `"code/train/run_config.yml"`      | The name of your runconfig YAML file. |
 
-- For a Pipeline YAML file (default `"code/train/pipeline.yml"`), which describes your Azure Machine Learning Pipeline that you want to submit. You can change the default value with the `pipeline_yaml_file` parameter.
+- Using a Pipeline YAML file (default `"code/train/pipeline.yml"`), which describes your Azure Machine Learning Pipeline that you want to submit. You can change the default value with the `pipeline_yaml_file` parameter.
 
 | Parameter Name        | Required | Allowed Values           | Default    | Description |
 | --------------------- | -------- | ------------------------ | ---------- | ----------- |      
